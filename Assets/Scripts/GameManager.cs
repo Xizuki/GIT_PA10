@@ -33,7 +33,6 @@ public class GameManager : MonoBehaviour
             }
             StartGame();
         }
-        print("Global.onLoseScreen = " + Global.onLoseScreen);
     }
 
     public void UpdateScore(int value)
