@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,8 +19,21 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (Time.timeScale == 0 && Input.GetKeyDown(KeyCode.Return))
+        if (!Global.onLoseScreen)
+        {
+            if (Time.timeScale == 0 && Input.GetKeyDown(KeyCode.Return))
+                StartGame();
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                SceneManager.LoadScene("GameScene");
+                Global.onLoseScreen = false;
+            }
             StartGame();
+        }
+        print("Global.onLoseScreen = " + Global.onLoseScreen);
     }
 
     public void UpdateScore(int value)
@@ -32,14 +46,25 @@ public class GameManager : MonoBehaviour
     {
         Score = 0;
         Time.timeScale = 1;
-        Txt_Message.text = "";
-        Txt_Score.text = "SCORE : 0";
+        if (!Global.onLoseScreen)
+        {
+            Txt_Message.text = "";
+            Txt_Score.text = "SCORE : 0";
+        }
+        else
+        {
+            print("START IN GAME OVER SCENE");
+            Txt_Message.text = "GAMEOVER! \nPRESS ENTER TO RESTART GAME.";
+            Txt_Message.color = Color.red;
+            Txt_Score.text = "SCORE : " + Global.Score;
+        }
+        
     }
 
     public void GameOver()
     {
-        Time.timeScale = 0;
-        Txt_Message.text = "GAMEOVER! \nPRESS ENTER TO RESTART GAME.";
-        Txt_Message.color = Color.red;
+        Global.Score = Score;
+        Global.onLoseScreen = true;
+        SceneManager.LoadScene("GameOverScene");
     }
 }

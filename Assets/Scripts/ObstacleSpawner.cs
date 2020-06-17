@@ -11,12 +11,15 @@ public class ObstacleSpawner : MonoBehaviour
 
     void Update()
     {
-        if(Time.time >= NextSpawn)
+        if (Time.timeScale == 1)
         {
-            NextSpawn = Time.time + SpawnInterval;
-            Vector3 SpawnPos = new Vector3(8, Random.Range(-3, 3), 0);
+            if (Time.time >= NextSpawn)
+            {
+                NextSpawn = Time.time + SpawnInterval;
+                Vector3 SpawnPos = new Vector3(8, Random.Range(-3, 3), 0);
 
-            Instantiate(Obstacle, SpawnPos, Quaternion.identity);
+                Instantiate(Obstacle, SpawnPos, Quaternion.identity);
+            }
         }
     }
 }
